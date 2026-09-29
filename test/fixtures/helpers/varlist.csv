@@ -1,0 +1,5 @@
+variables,units,definition
+rGDP,millions of LC,Real Gross Domestic Product
+infl,percent,Inflation rate
+nGDP,millions of LC,Nominal Gross Domestic Product
+unemp,percent,Unemployment rate

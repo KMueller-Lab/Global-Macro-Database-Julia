@@ -1,0 +1,10 @@
+# Julia
+Manifest.toml
+/docs/build/
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+.DS_Store
+
+# Local cache written by the package
+.global_macro_data/
