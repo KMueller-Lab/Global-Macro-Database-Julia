@@ -1,7 +1,7 @@
 # Shared constants for the GMD package (ports the module constants from the
 # Python gmd.py and the MATLAB gmdConfig).
 
-const PACKAGE_VERSION = "1.2.0"
+const PACKAGE_VERSION = "1.0.0"
 
 const DATA_BASES = [
     "https://gmd-releases.s3.ap-southeast-2.amazonaws.com/data",

@@ -1,7 +1,7 @@
 name = "GMD"
 uuid = "b7e0c8a2-3f4d-4e1a-9c2b-6d5f8a1e0c34"
 authors = ["Riccardo Dal Cero <dalcero@safe-frankfurt.de>"]
-version = "1.2.0"
+version = "1.0.0"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
