@@ -94,7 +94,34 @@ GMD.use_fixtures(FIXTURES, TESTCACHE)
         df = gmd(sources="CS1_ARG", variables="M3_GDP")
         @test "CS1_M3_GDP" in names(df)
 
+        # Two-digit slots and lower case: CS10_ITA loads ITA_10, columns CS10_.
+        for name in ("CS10_ITA", "cs10_ita", "ITA_10")
+            df = gmd(sources=name)
+            @test "CS10_CPI" in names(df)
+            @test maximum(Int.(df.year)) == 1913
+        end
+        df = gmd(sources="cs10_ita", variables="CPI")
+        @test names(df) == ["ISO3", "year", "CS10_CPI"]
+        e = caught(() -> gmd(sources="CS10_ITA", variables="M3"))
+        @test e isa GMDCommandError && occursin("It has data on CPI nGDP rGDP.", e.msg)
+
         @test_throws GMDCommandError gmd(sources="NOPE")
+    end
+
+    @testset "source name aliases" begin
+        @test GMD.normalize_source_name("CS1_ARG") == "ARG_1"
+        @test GMD.normalize_source_name("CS10_ITA") == "ITA_10"
+        @test GMD.normalize_source_name("cs10_ita") == "ITA_10"
+        @test GMD.normalize_source_name(" CS123_usa ") == "USA_123"
+        for name in ("IMF_WEO", "AAL", "CatSol", "Mitchell", "BoCBoE", "CEPII",
+                     "ITA_10", "ARG_1", "CS1", "CS_ARG", "CS1_ARGX", "CSX_ARG")
+            @test GMD.normalize_source_name(name) == name
+        end
+
+        @test GMD.cs_column_prefix("CS1_ARG") == "CS1"
+        @test GMD.cs_column_prefix("cs10_ita") == "CS10"
+        @test GMD.cs_column_prefix("ITA_10") == ""
+        @test GMD.cs_column_prefix("IMF_WEO") == ""
     end
 
     @testset "default load" begin

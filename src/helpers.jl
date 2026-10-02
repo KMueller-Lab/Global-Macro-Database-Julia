@@ -129,13 +129,21 @@ function format_bibtex(entry)
     return s
 end
 
-"Convert a 7-char CS alias (e.g. \"CS1_ARG\") to \"ARG_1\". Ports `_normalize_source_name`."
+# Public name of a country source: CS<n>_<ISO3>, any number of digits, any case.
+const CS_ALIAS = r"^CS(\d+)_([A-Za-z]{3})$"i
+
+"Convert a CS alias (e.g. \"CS1_ARG\", \"cs10_ita\") to its file name (\"ARG_1\", \"ITA_10\"). Ports `_normalize_source_name`."
 function normalize_source_name(source)
     s = strip(string(source))
-    if length(s) == 7 && startswith(s, "CS")
-        return string(s[end-2:end], "_", s[3])
-    end
-    return s
+    m = match(CS_ALIAS, s)
+    m === nothing && return s
+    return string(uppercase(m.captures[2]), "_", m.captures[1])
+end
+
+"Column prefix inside a CS alias's file (\"CS10\" for \"cs10_ita\"); \"\" for any other name."
+function cs_column_prefix(source)
+    m = match(CS_ALIAS, strip(string(source)))
+    return m === nothing ? "" : string("CS", m.captures[1])
 end
 
 "Raise a GMD error when a mode requires internet access. Ports `_fail_needs_internet`."

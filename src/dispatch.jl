@@ -107,12 +107,8 @@ end
 
 # --- source-level loader -----------------------------------------------------
 function _load_source_data(src_name, anything, country_arg)
-    cs_prefix = ""
-    name = strip(string(src_name))
-    if length(name) == 7 && startswith(name, "CS")
-        cs_prefix = split(name, "_")[1]
-        name = normalize_source_name(name)
-    end
+    cs_prefix = cs_column_prefix(src_name)
+    name = normalize_source_name(src_name)
     src_tokens = tokens(name)
     length(src_tokens) > 1 && fail(498, "Warning: Please specify exactly one source.")
     name = src_tokens[1]
